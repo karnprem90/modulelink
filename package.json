@@ -1,6 +1,6 @@
 {
   "name": "modulelin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "my first npm ",
   "main": "index.js",
   "scripts": {
