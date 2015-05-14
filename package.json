@@ -1,5 +1,5 @@
 {
-  "name": "modulelink",
+  "name": "modulelin",
   "version": "1.0.0",
   "description": "my first npm ",
   "main": "index.js",
@@ -11,7 +11,7 @@
     "url": "https://github.com/karnprem90/modulelink.git"
   },
   "author": "Prem <karnprem@cronj.com>",
-  "license": "karnprem@cronj.com",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/karnprem90/modulelink/issues"
   },
