@@ -1,62 +1,16 @@
-'use strict';
-
-var Joi = require('joi'),
-    Boom = require('boom'),
-    http = require('http'),
-    querystring = require('querystring'),
-    Config = require('./config/config');
-
-exports.getClassificationAttributeHost = {
-  handler: function (request, reply) {
-      return reply(Config.host.classificationAttribute);
-  }
-};
-
-exports.classificationPOST = {
-  handler: function (request, reply) {
-    var post_data = querystring.stringify(request.payload);
-    var options = {
-      host: Config.host.classificationAttribute,
-      path: request.path,
-      method: 'POST',
-      headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Content-Length': post_data.length
-          }
-    };
-
-    var req = http.request(options, function(res) {
-      return reply(res);
-    });
-
-    req.on('error', function(e) {
-      console.log('problem with request: ' + e.message);
-    });
-    
-    // write data to request body
-    req.write(post_data);
-    req.end();
-  }
-};
+// Load modules
 
 
-exports.classificationGET = {
-  handler: function (request, reply) {
-    var options = {
-      host: Config.host.classificationAttribute,
-      path: request.path,
-      method: 'GET'
-    };
+var classification = require('./routes.js');
 
-    var req = http.request(options, function(res) {
-      return reply(res);
-    });
+// API Server Endpoints
+exports.endpoint = [
 
-    req.on('error', function(e) {
-      console.log('problem with request: ' + e.message);
-    });
-    
-    req.end();
-  }
-};
-
+    { method: 'GET',  path: '/getClassificationAttributeHost', config: classification.getClassificationAttributeHost },
+    { method: 'POST', path: '/api/classificationSearch', config: classification.classificationPOST},
+    { method: 'POST', path: '/api/classificationGroupSearch', config: classification.classificationPOST},
+    { method: 'POST', path: '/api/attributeSearch', config: classification.classificationPOST},
+    { method: 'POST', path: '/api/attributeSectionSearch', config: classification.classificationPOST},
+    { method: 'POST', path: '/api/attributeList', config: classification.classificationPOST},
+    { method: 'GET',  path: '/api/attribute/{id}', config: classification.classificationGET}
+];

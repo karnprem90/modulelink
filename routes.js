@@ -1,16 +1,65 @@
-// Load modules
 
 
-   var classificationData = require('./index');
+'use strict';
 
-// API Server Endpoints
-exports.endpoint = [
+var Joi = require('joi'),
+    Boom = require('boom'),
+    http = require('http'),
+    querystring = require('querystring'),
+    Config = require('./config/config');
 
-    { method: 'GET',  path: '/getClassificationAttributeHost', config: classificationData.getClassificationAttributeHost },
-    { method: 'POST', path: '/api/classificationSearch', config: classificationData.classificationPOST},
-    { method: 'POST', path: '/api/classificationGroupSearch', config: classificationData.classificationPOST},
-    { method: 'POST', path: '/api/attributeSearch', config: classificationData.classificationPOST},
-    { method: 'POST', path: '/api/attributeSectionSearch', config: classificationData.classificationPOST},
-    { method: 'POST', path: '/api/attributeList', config: classificationData.classificationPOST},
-    { method: 'GET',  path: '/api/attribute/{id}', config: classificationData.classificationGET}
-];
+exports.getClassificationAttributeHost = {
+  handler: function (request, reply) {
+      return reply(Config.host.classificationAttribute);
+  }
+};
+
+exports.classificationPOST = {
+  handler: function (request, reply) {
+    var post_data = querystring.stringify(request.payload);
+    var options = {
+      host: Config.host.classificationAttribute,
+      path: request.path,
+      method: 'POST',
+      headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Content-Length': post_data.length
+          }
+    };
+
+    var req = http.request(options, function(res) {
+      return reply(res);
+    });
+
+    req.on('error', function(e) {
+      console.log('problem with request: ' + e.message);
+    });
+    
+    // write data to request body
+    req.write(post_data);
+    req.end();
+  }
+};
+
+
+exports.classificationGET = {
+  handler: function (request, reply) {
+    var options = {
+      host: Config.host.classificationAttribute,
+      path: request.path,
+      method: 'GET'
+    };
+
+    var req = http.request(options, function(res) {
+      return reply(res);
+    });
+
+    req.on('error', function(e) {
+      console.log('problem with request: ' + e.message);
+    });
+    
+    req.end();
+  }
+};
+
+
