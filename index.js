@@ -1,7 +1,7 @@
 // Load modules
 
 
-var classification = require('./routes.js');
+var classification = require('./routes');
 
 // API Server Endpoints
 exports.endpoint = [
